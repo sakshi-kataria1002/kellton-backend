@@ -5,7 +5,7 @@ const mongoose = require('mongoose')
 //const Schema = mongoose.Schema
 
 //Setting Schema what king of data type you are sending it over
-const postSchema = new mongoose.Schema({
+const productSchema = new mongoose.Schema({
     id:{
         type:Number,
         required:true
@@ -24,4 +24,4 @@ const postSchema = new mongoose.Schema({
     }
 })
 
-module.exports = mongoose.model('shop_data', postSchema)
+module.exports = mongoose.model('shop_data', productSchema)

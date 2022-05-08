@@ -2,6 +2,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const apiroute = require('./routes/api_route')
+const cors = require('cors')
 
 // Initialize the Application
 const app = express()
@@ -12,10 +13,14 @@ app.use(express.json()) // Set Content Type to JSON
 
 // Send Message for your localhost
 app.use('/', apiroute)
+app.use(cors({
+    origin: '*' //client where we are sending the data
+}))
 //app.get('/', (request, response) => {
 //    response.send('Hello the first ecommerce backend response')
 //})
 
+//MongoDB Database connection
 const url = "mongodb+srv://sakshi_kataria:12345@kelltontech.yr85k.mongodb.net/Kellton-Ecommerce?retryWrites=true&w=majority"
 
 mongoose.connect(url, {useNewUrlParser:true})
