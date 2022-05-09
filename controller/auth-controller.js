@@ -15,20 +15,6 @@ exports.signUp = async (req,res) =>{
     const hashedPassword = await bcrypt.hash(req.body.password,salt)
     const hashedConfirmPassword = await bcrypt.hash(req.body.confirmPassword,salt)
 
-    if(hashedPassword === hashedConfirmPassword){
-        const user = new authModel({
-            displayName:req.body.displayName,
-            email:req.body.email,
-            password: hashedPassword,
-            confirmPassword: hashedConfirmPassword
-        })
-
-        const saveUser = await user.save()
-        res.status(200).send("User Created Successfully")
-    }else{
-        res.send("Password not matching")
-    }
-
     try {
         const registrationSchema = Joi.object({
             displayName: Joi.string().min(3).required(),
@@ -39,11 +25,25 @@ exports.signUp = async (req,res) =>{
 
         const {error} = await registrationSchema.validateAsync(req.body)
 
-        if(error){
+        if(error) {
             res.status(400).send(error.details[0].message)
             return;
+        }else {
+            if(hashedPassword === hashedConfirmPassword){
+                const user = new authModel({
+                    displayName:req.body.displayName,
+                    email:req.body.email,
+                    password: hashedPassword,
+                    confirmPassword: hashedConfirmPassword
+                })
+        
+                const saveUser = await user.save()
+                res.status(200).send("User Created Successfully")
+            }else {
+                res.send("Password not matching")
+            }
         }
-    } catch (error) {
+    }catch (error) {
         res.status(500).send(error)
     }
 }
